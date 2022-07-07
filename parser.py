@@ -1,10 +1,9 @@
 import argparse
+
 from utils import *
 
 
 class Parser:
-    # TODO wyjatek - za duzo podanych argumentow
-    # TODO wyjatek - niepoprawny argument
     def __init__(self):
         self.__parser = argparse.ArgumentParser()
 

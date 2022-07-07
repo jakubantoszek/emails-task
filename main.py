@@ -2,6 +2,7 @@ import os
 import email
 import file
 import parser
+from utils import check_arguments
 
 if __name__ == '__main__':
     dir_list = os.listdir('emails')
@@ -20,5 +21,6 @@ if __name__ == '__main__':
         else:
             incorrect_emails.append(email_obj)
 
-    cli_parser = parser.Parser()
-    cli_parser.call_functions(correct_emails, incorrect_emails)
+    if check_arguments():
+        cli_parser = parser.Parser()
+        cli_parser.call_functions(correct_emails, incorrect_emails)

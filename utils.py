@@ -1,3 +1,6 @@
+import sys
+
+
 def show_incorrect_emails(incorrect_emails):
     print("Invalid emails (" + str(len(incorrect_emails)) + "):")
     for email in incorrect_emails:
@@ -48,3 +51,28 @@ def find_emails_not_in_logs(correct_emails, path):
 
     for nf_email in sorted(not_found_emails):
         print(nf_email)
+
+
+def check_arguments():
+    # check if arguments given to program are correct
+    args = sys.argv
+
+    if len(args) == 1:
+        print('There are no arguments')
+        return False
+    if len(args) > 3:
+        print('There are too much arguments')
+        return False
+    if args[1] in ['--incorrect-emails', 'ic', '--group-by-domain', '-gbd']:
+        if len(args) == 3:
+            print('There are too much arguments')
+            return False
+        return True
+    if args[1] in ['--search', '-s', '--find-emails-not-in-logs', '-feil']:
+        if len(args) == 2:
+            print('You must add value to argument')
+            return False
+        return True
+
+    print('Wrong arguments')
+    return False
