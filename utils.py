@@ -28,3 +28,23 @@ def group_by_domain(correct_emails):
         print('Domain ' + domain + ' (' + str(len(dictionary[domain])) + '):')
         for email in sorted(dictionary[domain]):
             print("    " + email)
+
+
+def find_emails_not_in_logs(correct_emails, path):
+    logs_emails = []
+    not_found_emails = []
+
+    with open(path) as logs_file:
+        # read all emails from logs file
+        lines = logs_file.read().splitlines()
+        for line in lines:
+            logs_emails.append(line[47:-2])  # get only e-mail from line (everything before it has constant length)
+
+    for email in correct_emails:
+        if str(email) not in logs_emails:
+            not_found_emails.append(str(email))
+
+    print("Emails not sent (" + str(len(not_found_emails)) + "):")
+
+    for nf_email in sorted(not_found_emails):
+        print(nf_email)
