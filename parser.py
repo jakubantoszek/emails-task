@@ -14,6 +14,7 @@ class Parser:
         # add commands variables
         self.__ic = args.incorrect_emails
         self.__search = args.search
+        self.__gbd = args.group_by_domain
 
     def add_arguments(self):
         self.__parser.add_argument('--incorrect-emails', '-ic',
@@ -33,3 +34,5 @@ class Parser:
             show_incorrect_emails(incorrect_emails)
         if self.__search is not None:
             search_by_text(correct_emails, self.__search)
+        if self.__gbd:
+            group_by_domain(correct_emails)

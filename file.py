@@ -14,9 +14,11 @@ class File:
             with open('emails/' + self.__path) as txt_file:
                 lines = txt_file.read().splitlines()
                 for line in lines:
-                    emails_list.append(line)
+                    if line not in emails_list:
+                        emails_list.append(line)
 
         if self.__extension == '.csv':
             data = pd.read_csv('emails/' + self.__path, sep=';')
             for row in data['email']:
-                emails_list.append(row)
+                if row not in emails_list:
+                    emails_list.append(row)
