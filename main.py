@@ -21,3 +21,4 @@ if __name__ == '__main__':
             incorrect_emails.append(email_obj)
 
     cli_parser = parser.Parser()
+    cli_parser.call_functions(correct_emails, incorrect_emails)
