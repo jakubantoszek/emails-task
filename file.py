@@ -10,15 +10,17 @@ class File:
         self.__extension = split_path[1]
 
     def get_emails_from_file(self, emails_list):  # add emails from file to existing list
-        if self.__extension == '.txt':
-            with open('emails/' + self.__path) as txt_file:
-                lines = txt_file.read().splitlines()
-                for line in lines:
-                    if line not in emails_list:
+        try:
+            if self.__extension == '.txt':
+                with open('emails/' + self.__path) as txt_file:
+                    lines = txt_file.read().splitlines()
+                    for line in lines:
                         emails_list.append(line)
 
-        if self.__extension == '.csv':
-            data = pd.read_csv('emails/' + self.__path, sep=';')
-            for row in data['email']:
-                if row not in emails_list:
+            if self.__extension == '.csv':
+                data = pd.read_csv('emails/' + self.__path, sep=';')
+                for row in data['email']:
                     emails_list.append(row)
+
+        except IOError:
+            print('Cannot read the file ' + self.__path)

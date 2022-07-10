@@ -14,13 +14,16 @@ def search_by_text(correct_emails, text):
         if text in str(email):
             matches.append(email)
 
-    print("Found emails with '" + text + "' in email (" + str(len(matches)) + "):")
-    for matched_email in matches:
-        print("    " + str(matched_email))
+    if len(matches) > 0:
+        print("Found emails with '" + text + "' in email (" + str(len(matches)) + "):")
+        for matched_email in matches:
+            print("    " + str(matched_email))
+    else:
+        print("Emails with '" + text + "' not found")
 
 
 def group_by_domain(correct_emails):
-    dictionary = {}
+    dictionary = {}  # domain is key, list of emails is value
     for email in correct_emails:
         if email.domain in dictionary:
             dictionary[email.domain].append(str(email))
@@ -37,20 +40,23 @@ def find_emails_not_in_logs(correct_emails, path):
     logs_emails = []
     not_found_emails = []
 
-    with open(path) as logs_file:
-        # read all emails from logs file
-        lines = logs_file.read().splitlines()
-        for line in lines:
-            logs_emails.append(line[47:-2])  # get only e-mail from line (everything before it has constant length)
+    try:
+        with open(path) as logs_file:
+            # read all emails from logs file
+            lines = logs_file.read().splitlines()
+            for line in lines:
+                logs_emails.append(line[47:-2])  # get only e-mail from line (everything before it has constant length)
 
-    for email in correct_emails:
-        if str(email) not in logs_emails:
-            not_found_emails.append(str(email))
+        for email in correct_emails:
+            if str(email) not in logs_emails:
+                not_found_emails.append(str(email))
 
-    print("Emails not sent (" + str(len(not_found_emails)) + "):")
+        print("Emails not sent (" + str(len(not_found_emails)) + "):")
 
-    for nf_email in sorted(not_found_emails):
-        print(nf_email)
+        for nf_email in sorted(not_found_emails):
+            print("    " + nf_email)
+    except IOError:
+        print('Cannot open the file, make sure the path is correct')
 
 
 def check_arguments():
@@ -58,21 +64,26 @@ def check_arguments():
     args = sys.argv
 
     if len(args) == 1:
-        print('There are no arguments')
+        print('There are no commands')
         return False
     if len(args) > 3:
-        print('There are too much arguments')
+        print('There are too much commands or arguments')
         return False
-    if args[1] in ['--incorrect-emails', 'ic', '--group-by-domain', '-gbd']:
+    if args[1] in ['--incorrect-emails', '-ic', '--group-by-domain', '-gbd']:
         if len(args) == 3:
-            print('There are too much arguments')
+            print('There are too much commands or arguments')
             return False
         return True
     if args[1] in ['--search', '-s', '--find-emails-not-in-logs', '-feil']:
         if len(args) == 2:
-            print('You must add value to argument')
+            print('You must add argument to command')
+            return False
+        elif args[2][0] == '-':
+            print("Wrong argument to command, - can't be first character")
             return False
         return True
+    elif args[1] not in ['--help', '-h']:
+        print('Wrong commands')
+        return False
 
-    print('Wrong arguments')
-    return False
+    return True
