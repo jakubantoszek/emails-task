@@ -36,3 +36,5 @@ if __name__ == '__main__':
     if check_arguments():
         cli_parser = parser.Parser()
         cli_parser.call_functions(correct_emails, incorrect_emails)  # call function that matches to program args
+    else:
+        print('Type -h or --help as argument to check correct commands')
